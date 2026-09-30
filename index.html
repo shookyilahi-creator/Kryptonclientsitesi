@@ -9,17 +9,22 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:#e6edf3;line-height:1.6;overflow-x:hidden}
+  body.lock{overflow:hidden}
   #bg{position:fixed;inset:0;z-index:0}
-  .glow{position:fixed;width:60vmax;height:60vmax;border-radius:50%;filter:blur(120px);opacity:.18;z-index:0;animation:float 18s ease-in-out infinite alternate;transition:background .6s}
+  .glow{position:fixed;width:60vmax;height:60vmax;border-radius:50%;filter:blur(120px);opacity:.18;z-index:0;animation:float 18s ease-in-out infinite alternate}
   .g1{background:var(--g);top:-20vmax;left:-20vmax}
   .g2{background:var(--c);bottom:-25vmax;right:-20vmax;animation-delay:-9s}
   @keyframes float{to{transform:translate(8vmax,6vmax) scale(1.15)}}
   .wrap{position:relative;z-index:1}
-  nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 20px;backdrop-filter:blur(12px);background:rgba(7,11,16,.55);border-bottom:1px solid rgba(255,255,255,.06)}
+  nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;backdrop-filter:blur(12px);background:rgba(7,11,16,.55);border-bottom:1px solid rgba(255,255,255,.06)}
   nav b{letter-spacing:.5px;background:linear-gradient(90deg,var(--g),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #burger{width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;transition:.3s}
+  #burger:hover{border-color:var(--g);box-shadow:0 0 16px color-mix(in srgb,var(--g) 40%,transparent)}
+  #burger i{display:block;width:20px;height:2px;background:#fff;border-radius:2px;transition:.3s}
   #snd{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#fff;padding:8px 14px;border-radius:999px;font-size:.9rem;cursor:pointer;transition:.3s}
   #snd.on{border-color:var(--g);box-shadow:0 0 16px color-mix(in srgb,var(--g) 40%,transparent)}
   header{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:90px 20px 40px}
+  .badge{display:inline-block;margin-bottom:18px;padding:6px 16px;border-radius:999px;border:1px solid color-mix(in srgb,var(--g) 50%,transparent);background:color-mix(in srgb,var(--g) 10%,transparent);color:var(--g);font-size:.85rem;font-weight:700;letter-spacing:.5px}
   h1{font-size:clamp(2.6rem,11vw,5.5rem);font-weight:900;line-height:1.05;background:linear-gradient(90deg,var(--g),var(--c),var(--g));background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite;filter:drop-shadow(0 0 28px color-mix(in srgb,var(--g) 35%,transparent))}
   @keyframes shine{to{background-position:200%}}
   header p{max-width:520px;margin:18px auto 30px;color:#9fb3a8;font-size:1.1rem}
@@ -47,19 +52,38 @@
   .rv.in{opacity:1;transform:none}
   .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
 
-  /* Theme picker */
-  #pal{position:fixed;right:18px;bottom:18px;z-index:20;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(22,27,34,.85);backdrop-filter:blur(10px);font-size:1.4rem;cursor:pointer;transition:transform .3s,box-shadow .3s;box-shadow:0 0 20px color-mix(in srgb,var(--g) 35%,transparent)}
-  #pal:hover{transform:rotate(20deg) scale(1.08)}
-  #panel{position:fixed;right:18px;bottom:82px;z-index:20;width:min(290px,calc(100vw - 36px));background:rgba(16,21,28,.92);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:18px;opacity:0;transform:translateY(14px) scale(.96);pointer-events:none;transition:opacity .3s,transform .3s}
-  #panel.open{opacity:1;transform:none;pointer-events:auto}
-  #panel h4{margin-bottom:12px;font-size:.95rem}
-  .sw{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px}
+  /* Sidebar */
+  #ov{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .4s}
+  #ov.open{opacity:1;pointer-events:auto}
+  #side{position:fixed;top:0;left:0;bottom:0;z-index:40;width:min(360px,88vw);background:rgba(13,17,23,.96);backdrop-filter:blur(16px);border-right:1px solid rgba(255,255,255,.1);transform:translateX(-102%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:12px 0 50px rgba(0,0,0,.5)}
+  #side.open{transform:none}
+  .sh{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .sh b{background:linear-gradient(90deg,var(--g),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #x{background:none;border:0;color:#9fb3a8;font-size:1.6rem;cursor:pointer;line-height:1}
+  .tabs{display:flex;gap:8px;padding:12px 18px 0}
+  .tab{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#9fb3a8;font-weight:700;cursor:pointer;transition:.3s}
+  .tab.act{color:#06110b;background:linear-gradient(135deg,var(--g),var(--c));border-color:transparent}
+  .pane{display:none;padding:16px 18px 30px;overflow-y:auto;flex:1}
+  .pane.act{display:block;animation:fade .4s}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}}
+  .pane h4{margin-bottom:12px;font-size:.95rem}
+  .sw{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px}
   .sw button{aspect-ratio:1;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .2s,border-color .2s}
   .sw button:hover{transform:scale(1.15)}
   .sw button.act{border-color:#fff}
-  .pick{display:flex;justify-content:space-between;align-items:center;margin:8px 0;font-size:.9rem;color:#c9d1d9}
-  .pick input{width:54px;height:34px;border:0;border-radius:8px;background:none;cursor:pointer}
-  #reset{width:100%;margin-top:8px;padding:9px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
+  .pick{display:flex;justify-content:space-between;align-items:center;margin:10px 0;font-size:.92rem;color:#c9d1d9}
+  .pick input{width:56px;height:36px;border:0;border-radius:8px;background:none;cursor:pointer}
+  #reset{width:100%;margin-top:10px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
+  #ms{width:100%;padding:11px 14px;margin-bottom:12px;border-radius:10px;border:1px solid #30363d;background:#161b22;color:#e6edf3;font-size:.95rem}
+  details{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:10px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:12px 14px;font-weight:800;display:flex;justify-content:space-between;align-items:center;letter-spacing:.3px}
+  summary::-webkit-details-marker{display:none}
+  summary em{font-style:normal;font-weight:600;font-size:.8rem;color:var(--g);background:color-mix(in srgb,var(--g) 12%,transparent);padding:2px 10px;border-radius:999px}
+  details[open] summary{border-bottom:1px solid rgba(255,255,255,.08)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;padding:12px 14px}
+  .chips span{font-size:.8rem;padding:5px 11px;border-radius:8px;background:rgba(255,255,255,.06);color:#c9d1d9;border:1px solid rgba(255,255,255,.06);transition:.25s}
+  .chips span:hover{border-color:var(--g);color:#fff;transform:translateY(-2px)}
+  .none{color:#6e7681;text-align:center;padding:20px 0;display:none}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
 </head>
@@ -67,10 +91,39 @@
 <canvas id="bg"></canvas>
 <div class="glow g1"></div><div class="glow g2"></div>
 
+<div id="ov"></div>
+<aside id="side">
+  <div class="sh"><b>KRYPTON CLIENT</b><button id="x" aria-label="Close">×</button></div>
+  <div class="tabs">
+    <button class="tab act" data-p="p-themes">🎨 Themes</button>
+    <button class="tab" data-p="p-mods">🧩 Modules</button>
+  </div>
+
+  <div class="pane act" id="p-themes">
+    <h4>Preset themes</h4>
+    <div class="sw" id="sw"></div>
+    <h4>Custom colors</h4>
+    <label class="pick">Main color <input type="color" id="c1"></label>
+    <label class="pick">Accent color <input type="color" id="c2"></label>
+    <button id="reset">Reset</button>
+  </div>
+
+  <div class="pane" id="p-mods">
+    <input id="ms" placeholder="Search modules...">
+    <div id="mods"></div>
+    <div class="none" id="none">No modules found.</div>
+  </div>
+</aside>
+
 <div class="wrap">
-  <nav><b>KRYPTON CLIENT</b><button id="snd">🔇 Sound</button></nav>
+  <nav>
+    <button id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+    <b>KRYPTON CLIENT</b>
+    <button id="snd">🔇 Sound</button>
+  </nav>
 
   <header>
+    <span class="badge rv">MINECRAFT 1.21.11</span>
     <h1 class="rv">KRYPTON<br>CLIENT</h1>
     <p class="rv d1">Fast, smooth and powerful. Built for DonutSMP and CPvP.</p>
     <a class="btn rv d2" href="#download">Download Now</a>
@@ -88,7 +141,7 @@
   <section id="download">
     <div class="dl rv">
       <h2>Download Krypton Client</h2>
-      <div class="meta"><span>Version 1.0</span><span>Minecraft 1.21</span><span>Free</span></div>
+      <div class="meta"><span>Version 1.0</span><span>Minecraft 1.21.11</span><span>Free</span></div>
       <a class="btn" id="dlbtn" href="https://gofile.io/d/epGP7u5b" target="_blank" rel="noopener">⬇ Download</a>
       <p class="hint">The download opens on GoFile.</p>
     </div>
@@ -99,23 +152,51 @@
     <ol class="rv">
       <li>Download the client.</li>
       <li>Extract it / put it in your mods folder.</li>
-      <li>Launch the game and enjoy.</li>
+      <li>Launch Minecraft 1.21.11 and enjoy.</li>
     </ol>
   </section>
 
   <footer>© 2026 Krypton Client</footer>
 </div>
 
-<button id="pal" aria-label="Change colors">🎨</button>
-<div id="panel">
-  <h4>Theme colors</h4>
-  <div class="sw" id="sw"></div>
-  <label class="pick">Main color <input type="color" id="c1"></label>
-  <label class="pick">Accent color <input type="color" id="c2"></label>
-  <button id="reset">Reset</button>
-</div>
-
 <script>
+/* ---------- Module data ---------- */
+const MODULES=[
+ ["⚔️ Combat",["Aim Assist","Anchor Macro","Auto Double Hand","Auto Crystal","Auto Hit Crystal","Auto Inv Totem","Auto Jump Reset","Auto Totem","Crystal Optimizer","Double Anchor","Elytra Swap","Hitbox","Hover Totem","Totem Offhand","Mace Swap","No Hit Delay","Shield Breaker","Static Hitboxes","Trigger Bot","Mace Bomber"]],
+ ["🧰 Misc",["Auto Clicker","Auto Eat","Auto Firework","Auto Log","Auto Loot","Auto Mine","Auto Tool","Auto TPA","Cord Snapper","Elytra Glide","Fast Place","Freecam","Key Pearl","Key Wind Charge","Name Protect","Sprint","Skin Protect","Auto Reconnect"]],
+ ["🍩 Donut",["Anti Trap","Auction Sniper","Auto Sell","Auto Spawner Sell","Item Dropper","Netherite Finder","RTP Base Finder","Auto Shulker Buy","Tunnel Base Finder","Fake Stats","Spawner Protect","Chunk Finder","Sus Chunk Finder"]],
+ ["🧱 Basefinding",["Seed Chunk Finder","Hole ESP","Light Finder","Suspicious ESP"]],
+ ["👁️ Render",["Ore Sim","Fullbright","HUD","Player ESP","Storage ESP","Block ESP","Target HUD","RealHitbox","Free Look"]],
+ ["✨ Client",["Krypton+","Radio","Friends","Discord Presence"]],
+ ["🔎 Search",["Netherite Finder","RTP Base Finder","Tunnel Base Finder","Chunk Finder","Sus Chunk Finder","Seed Chunk Finder","Light Finder"]]
+];
+const modsEl=document.getElementById('mods'),ms=document.getElementById('ms'),none=document.getElementById('none');
+function renderMods(){
+  const t=ms.value.trim().toLowerCase();let shown=0;
+  modsEl.innerHTML=MODULES.map(([name,list])=>{
+    const f=list.filter(m=>m.toLowerCase().includes(t));
+    if(!f.length)return'';shown++;
+    return `<details ${t?'open':''}><summary>${name}<em>${f.length}</em></summary><div class="chips">${f.map(m=>`<span>${m}</span>`).join('')}</div></details>`;
+  }).join('');
+  none.style.display=shown?'none':'block';
+}
+ms.addEventListener('input',renderMods);renderMods();
+
+/* ---------- Sidebar ---------- */
+const side=document.getElementById('side'),ov=document.getElementById('ov');
+function openSide(o){
+  side.classList.toggle('open',o);ov.classList.toggle('open',o);document.body.classList.toggle('lock',o);
+  tone(o?620:420,.15,'sine',.15);
+}
+document.getElementById('burger').onclick=()=>openSide(true);
+document.getElementById('x').onclick=()=>openSide(false);
+ov.onclick=()=>openSide(false);
+addEventListener('keydown',e=>{if(e.key==='Escape')openSide(false)});
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab,.pane').forEach(el=>el.classList.remove('act'));
+  t.classList.add('act');document.getElementById(t.dataset.p).classList.add('act');tone(700,.1,'sine',.12);
+});
+
 /* ---------- Theme colors ---------- */
 const PRESETS=[["#3ddc84","#22d3ee"],["#a855f7","#ec4899"],["#ef4444","#f97316"],["#3b82f6","#06b6d4"],["#facc15","#f97316"],["#ff4ecd","#8b5cf6"]];
 let PG=PRESETS[0][0],PC=PRESETS[0][1];
@@ -136,7 +217,6 @@ PRESETS.forEach(([a,b])=>{
 c1.oninput=()=>applyTheme(c1.value,PC);
 c2.oninput=()=>applyTheme(PG,c2.value);
 document.getElementById('reset').onclick=()=>applyTheme(PRESETS[0][0],PRESETS[0][1]);
-document.getElementById('pal').onclick=()=>{document.getElementById('panel').classList.toggle('open');tone(600,.12,'sine',.12)};
 try{const t=JSON.parse(localStorage.getItem('kc-theme'));if(t)applyTheme(t[0],t[1],false);else applyTheme(PG,PC,false)}catch(e){applyTheme(PG,PC,false)}
 
 /* ---------- Background particles ---------- */
@@ -191,7 +271,7 @@ snd.addEventListener('click',()=>{
   snd.textContent=on?'🔊 Sound':'🔇 Sound';snd.classList.toggle('on',on);
   if(on){tone(523,.15,'sine',.2);tone(784,.2,'sine',.2,.1)}
 });
-document.querySelectorAll('.btn,.card,#snd').forEach(el=>el.addEventListener('pointerenter',()=>tone(880,.08,'sine',.05)));
+document.querySelectorAll('.btn,.card,#snd,#burger').forEach(el=>el.addEventListener('pointerenter',()=>tone(880,.08,'sine',.05)));
 document.querySelectorAll('.btn').forEach(b=>b.addEventListener('click',e=>{
   tone(440,.18,'triangle',.18);tone(660,.22,'triangle',.18,.08);tone(990,.3,'sine',.15,.16);
   const r=b.getBoundingClientRect(),s=document.createElement('span');s.className='rip';
@@ -200,4 +280,4 @@ document.querySelectorAll('.btn').forEach(b=>b.addEventListener('click',e=>{
 }));
 </script>
 </body>
-  </html>
+</html>
